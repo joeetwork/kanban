@@ -16,6 +16,3 @@
 		<div>{ticket}</div>
 	{/each}
 </div>
-
-<style>
-</style>

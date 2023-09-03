@@ -1,8 +1,5 @@
-<script>
-    export let handleClick
+<script lang="ts">
+	export let handleClick: () => void;
 </script>
 
-
-<button on:click={handleClick()}>
-    Add
-</button>
+<button on:click={handleClick}> Add </button>

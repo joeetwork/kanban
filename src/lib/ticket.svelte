@@ -1,7 +1,4 @@
 <script>
-    
 </script>
 
-<div>
-ticket
-</div>
+<div class="font-bold">ticket</div>
