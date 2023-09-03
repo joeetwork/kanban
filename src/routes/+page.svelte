@@ -4,18 +4,21 @@
 
 	let tickets: { id: string; ticket: Ticket }[] = [];
 	let about: string;
+	let id: string;
 
 	function generateRandomId() {
-		return Math.random().toString(16).slice(2);
+		id = Math.random().toString(16).slice(2);
 	}
 
 	function handleClick() {
+		generateRandomId();
 		const newTicket = {
-			id: generateRandomId(),
+			id,
 			ticket: new Ticket({
 				target: document.body,
 				props: {
-					about
+					about,
+					id
 				}
 			})
 		};
