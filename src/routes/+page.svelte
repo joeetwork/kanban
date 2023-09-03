@@ -1,28 +1,32 @@
 <script lang="ts">
 	import CreateModal from '$lib/createModal.svelte';
 	import Ticket from '$lib/ticket.svelte';
+	import { TipLink } from '@tiplink/api';
 
-	let tickets: { id: string; ticket: Ticket }[] = [];
+	let tickets: { tiplink: { publicKey: string; url: URL }; ticket: Ticket }[] = [];
 	let about: string;
-	let id: string;
+	let tiplink: { publicKey: string; url: URL };
 
-	function generateRandomId() {
-		id = Math.random().toString(16).slice(2);
-	}
+	const tipLink: () => Promise<{ publicKey: string; url: URL }> = async () => {
+		const tiplink = await TipLink.create();
+		return { publicKey: tiplink.keypair.publicKey.toBase58(), url: tiplink.url };
+	};
 
-	function handleClick() {
-		generateRandomId();
+	async function handleClick() {
+		tiplink = await tipLink();
 		const newTicket = {
-			id,
+			tiplink,
 			ticket: new Ticket({
 				target: document.body,
 				props: {
 					about,
-					id
+					linkAddress: tiplink.url.toString()
 				}
 			})
 		};
 		tickets.push(newTicket);
+		console.log(tickets);
+		
 	}
 
 	function handleChange(
@@ -38,7 +42,7 @@
 
 <CreateModal {handleChange} {handleClick} {about} />
 <div class="ticket-container">
-	{#each tickets as object (object.id)}
+	{#each tickets as object (object.tiplink.publicKey)}
 		<div>{object.ticket}</div>
 	{/each}
 </div>
