@@ -2,16 +2,23 @@
 	import CreateModal from '$lib/createModal.svelte';
 	import Ticket from '$lib/ticket.svelte';
 
-	let tickets: Record<string, unknown>[] = [];
+	let tickets: { id: string; ticket: Ticket }[] = [];
 	let about: string;
 
+	function generateRandomId() {
+		return Math.random().toString(16).slice(2);
+	}
+
 	function handleClick() {
-		const newTicket = new Ticket({
-			target: document.body,
-			props: {
-				about
-			}
-		});
+		const newTicket = {
+			id: generateRandomId(),
+			ticket: new Ticket({
+				target: document.body,
+				props: {
+					about
+				}
+			})
+		};
 		tickets.push(newTicket);
 	}
 
@@ -28,7 +35,7 @@
 
 <CreateModal {handleChange} {handleClick} {about} />
 <div class="ticket-container">
-	{#each tickets as ticket (ticket.id)}
-		<div>{ticket}</div>
+	{#each tickets as object (object.id)}
+		<div>{object.ticket}</div>
 	{/each}
 </div>
